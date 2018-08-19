@@ -2,17 +2,36 @@
 # -*- coding: utf-8 -*-
 
 import os, os.path
+from io import BytesIO
+
 import requests
 import re
-
+import urllib.request
+import matplotlib.pyplot as plt
+from PIL import Image
 from bs4 import BeautifulSoup
 from pdfconverter import to_pdf
 from urllib.request import urlretrieve
+
+# opener=urllib.request.build_opener()
+# opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+#
+# class AppURLopener(urllib.request.FancyURLopener):
+#     version = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Safari/537.36"
+# opener = AppURLopener()
 
 TESTE = "TESTE" 
 
 DIR_DOWNLOADED = os.path.join(os.getcwd(),"downloaded/")
 DIR_TEMP = os.path.join(os.getcwd(),"tmp/")
+
+
+def save_fig(path, tight_layout=True, fig_extension="png", resolution=300):
+    print("Saving figure")
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format=fig_extension, dpi=resolution)
+
 
 def checkFolder():
     print("Checking dependencies...")
@@ -48,8 +67,14 @@ def downloadPages(url, chapterpage, volumepage):
         soup_page = BeautifulSoup(chapter_page, 'html.parser')
         image = soup_page.find(id="image")
         url = image.get("src")
+        response = requests.get(url,stream=True)
+        #img = Image.open(BytesIO(response.content))
+        with open(os.path.join(DIR_TEMP, str(volumepage) + ".jpg"), 'wb') as handler:
+            handler.write(response.content)
+        #save_fig(os.path.join(DIR_TEMP, str(volumepage)),img)
         #urlretrieve(url, os.path.join(DIR_TEMP, str(volumepage) + ".jpg"))
-        os.system("wget -O {0} {1}".format(os.path.join(DIR_TEMP, str(volumepage) + ".jpg"), url))
+
+        #os.system("wget -O {0} {1}".format(os.path.join(DIR_TEMP, str(volumepage) + ".jpg"), url))
         return True
     except Exception as e:
         print("Ran into an exception: {}".format(str(e)))
