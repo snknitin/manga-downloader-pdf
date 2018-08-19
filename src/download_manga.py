@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os, os.path
-import urllib
 import requests
 import re
 
 from bs4 import BeautifulSoup
 from pdfconverter import to_pdf
+from urllib.request import urlretrieve
 
 TESTE = "TESTE" 
 
@@ -15,20 +15,20 @@ DIR_DOWNLOADED = os.path.join("../downloaded/")
 DIR_TEMP = os.path.join("../tmp/")
 
 def checkFolder():
-    print "Checking dependencies..."
+    print("Checking dependencies...")
     if not os.path.isdir(DIR_TEMP):
-        print"Creating tmp folder"
+        print("Creating tmp folder")
         os.makedirs(DIR_TEMP)
     else:
         # Delete all files in tmp folder to avoid misunderstanding during pdf creation
         files = os.listdir(DIR_TEMP)
         if files:
-            print "Deleting all files inside tmp folder"
+            print("Deleting all files inside tmp folder")
             for file in files:
                 os.remove(DIR_TEMP + file)
 
     if not os.path.isdir(DIR_DOWNLOADED):
-        print "Creating downloaded folder"
+        print("Creating downloaded folder")
         os.makedirs(DIR_DOWNLOADED)
 
 def checkVolumesDownloaded(manganame):
@@ -48,7 +48,7 @@ def downloadPages(url, chapterpage, volumepage):
         soup_page = BeautifulSoup(chapter_page, 'html.parser')
         image = soup_page.find(id="image")
         url = image.get("src")
-        urllib.urlretrieve(url, os.path.join("../tmp/", str(volumepage) + ".jpg"))
+        urlretrieve(url, os.path.join("../tmp/", str(volumepage) + ".jpg"))
         return True
     except:
         return False
@@ -86,12 +86,12 @@ def crawler(manganame, mangalink):
         volume = manganame + "_Volume_" + volumetodownload[0] + ".pdf"        
         alreadydownloaded = checkVolumesDownloaded(manganame)
         if volume in alreadydownloaded:
-            print "[  Volume", volumetodownload[0], " ] Is already in your folder downloaded"       
+            print("[  Volume", volumetodownload[0], " ] Is already in your folder downloaded")
         else:
-            print "[  Volume", volumetodownload[0], " ] Started"       
+            print("[  Volume", volumetodownload[0], " ] Started")
             numberofpages = 1
             for chapter in linkstodownload:
-                print " | Download | From", chapter
+                print(" | Download | From", chapter)
                 
                 manga = requests.get(chapter).content            
                 soup = BeautifulSoup(manga, 'html.parser')
@@ -108,7 +108,7 @@ def crawler(manganame, mangalink):
             to_pdf(volumetodownload[0], manganame)     
 
 def manuallyMode():
-    mangalink = raw_input('Enter your mangafox link: ')
+    mangalink = input('Enter your mangafox link: ')
         
     manganame = mangalink.replace("http://mangafox.me/manga/","")
     manganame = manganame.replace("/","")
@@ -117,11 +117,11 @@ def manuallyMode():
     crawler(manganame, mangalink)    
 
 def options():
-    option = raw_input('\n[MANGA DOWNLOADER PDF]\n\n[1] Type manga name\n[2] Manually insert url\n\nor anything else to exit:\n\n')
+    option = input('\n[MANGA DOWNLOADER PDF]\n\n[1] Type manga name\n[2] Manually insert url\n\nor anything else to exit:\n\n')
     
     if option == '1':
         
-        manganame = raw_input('Manga to download: ')
+        manganame = input('Manga to download: ')
 
         manganame = manganame.lower().strip().replace(' ', '_')
         mangalink = 'http://mangafox.me/manga/%s/' % manganame
@@ -130,7 +130,7 @@ def options():
         soup = BeautifulSoup(manga, 'html.parser')
 
         if soup.title.text == "Search for  Manga at Manga Fox - Page 0":
-            restart = raw_input('Manga not found! Do you wanna try again? (Y/N) ')
+            restart = input('Manga not found! Do you wanna try again? (Y/N) ')
             if restart.lower() == 'n' :
                 manuallyMode()
             else:
@@ -139,7 +139,7 @@ def options():
             title = soup.title.text
             title = title.split(' - ', 1)
 
-            response = raw_input('Do you want to download {}? (Y/N) '.format(title[0]))
+            response = input('Do you want to download {}? (Y/N) '.format(title[0]))
             if response.lower() == 'y':
                 manganame = title[0].replace(' Manga', '')
                 manganame = manganame.strip().replace(' ', '_')
