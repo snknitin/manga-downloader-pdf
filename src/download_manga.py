@@ -2,23 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os, os.path
-from io import BytesIO
-
 import requests
 import re
-import urllib.request
 import matplotlib.pyplot as plt
-from PIL import Image
 from bs4 import BeautifulSoup
 from pdfconverter import to_pdf
-from urllib.request import urlretrieve
 
-# opener=urllib.request.build_opener()
-# opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
-#
-# class AppURLopener(urllib.request.FancyURLopener):
-#     version = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Safari/537.36"
-# opener = AppURLopener()
 
 TESTE = "TESTE" 
 
@@ -132,7 +121,7 @@ def crawler(manganame, mangalink):
                         downloadsucess = downloadPages(chapter[:-6], pages.text, numberofpages)
                     numberofpages = numberofpages + 1
 
-            to_pdf(volumetodownload[0], manganame)     
+            to_pdf(DIR_TEMP,volumetodownload[0], manganame)
 
 def manuallyMode():
     mangalink = input('Enter your mangafox link: ')
@@ -184,7 +173,7 @@ if __name__ == "__main__":
     #options()
 
     # # For this version you need to edit this link
-    mangalink = "https://mangafox.me/manga/hunter_x_hunter/"
+    mangalink = "http://fanfox.net/manga/sherlock/"
     
     manganame = mangalink.replace("https://mangafox.me/manga/","")
     manganame = manganame.replace("/","")
