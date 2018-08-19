@@ -19,7 +19,7 @@ def to_pdf(folder,destination,volume, manganame):
         for i in range(1, len(lista)+1):
             img = str(i) + ".jpg"     
             pdf.add_page()
-            pdf.image(folder + img, 0, 0)
+            pdf.image(os.path.join(folder , img), 0, 0)
 
         pdf.output(os.path.join(destination , manganame + "_" + volume + ".pdf"), "F")
 
