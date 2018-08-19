@@ -1,6 +1,6 @@
 # Download manga and convert to pdf for Kindle
 
-Improved version for python3, code forked from [here](https://github.com/filipefilardi/manga-downloader-pdf)
+Improved version for python3 of code forked from [here](https://github.com/filipefilardi/manga-downloader-pdf)
 
 This code create pdf volumes for chapters that you find online. 
 
