@@ -5,11 +5,11 @@ import os
 from fpdf import FPDF
 from PIL import Image
 
-def to_pdf(volume, manganame):
+def to_pdf(folder,volume, manganame):
     volume = "Volume_" + volume
     print("[  " + volume + "  ] Converting all pictures downloaded to pdf")
 
-    folder = os.path.join("../tmp/")
+
     lista = os.listdir(folder)
     if(lista):
         cover = Image.open(folder + str(len(lista)) + ".jpg")
