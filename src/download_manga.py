@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 TESTE = "TESTE" 
 
-DIR_DOWNLOADED = args.DIR_DOWNLOADED
+DIR_DOWNLOADED = os.path.join(args.DIR_DOWNLOADED,args.mangalink[:-1].rpartition('/')[2].title())
 DIR_TEMP = os.path.join(args.DIR_TEMP,args.mangalink[:-1].rpartition('/')[2].title())
 
 
