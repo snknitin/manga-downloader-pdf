@@ -23,6 +23,6 @@ Feel free to contribute with the project in any way.
 
 ## How to Run ##
 
-`$ python download_manga.py -pdf="<insert a location>" -tmp="<insert a location>" -mangalink="http://fanfox.net/manga/liar_game_roots_of_a/"
+     python download_manga.py -pdf="<insert a location>" -tmp="<insert a location>" -mangalink="http://fanfox.net/manga/liar_game_roots_of_a/"
 
 
