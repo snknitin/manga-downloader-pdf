@@ -11,8 +11,8 @@ from urllib.request import urlretrieve
 
 TESTE = "TESTE" 
 
-DIR_DOWNLOADED = os.path.join("../downloaded/")
-DIR_TEMP = os.path.join("../tmp/")
+DIR_DOWNLOADED = os.path.join(os.getcwd(),"downloaded/")
+DIR_TEMP = os.path.join(os.getcwd(),"tmp/")
 
 def checkFolder():
     print("Checking dependencies...")
@@ -32,7 +32,7 @@ def checkFolder():
         os.makedirs(DIR_DOWNLOADED)
 
 def checkVolumesDownloaded(manganame):
-    folder = os.path.join("../downloaded/")
+    folder = DIR_DOWNLOADED
     volumes = os.listdir(folder)
 
     for volume in volumes:
@@ -48,9 +48,11 @@ def downloadPages(url, chapterpage, volumepage):
         soup_page = BeautifulSoup(chapter_page, 'html.parser')
         image = soup_page.find(id="image")
         url = image.get("src")
-        urlretrieve(url, os.path.join("../tmp/", str(volumepage) + ".jpg"))
+        #urlretrieve(url, os.path.join(DIR_TEMP, str(volumepage) + ".jpg"))
+        os.system("wget -O {0} {1}".format(os.path.join(DIR_TEMP, str(volumepage) + ".jpg"), url))
         return True
-    except:
+    except Exception as e:
+        print("Ran into an exception: {}".format(str(e)))
         return False
 
 def crawler(manganame, mangalink):
@@ -64,7 +66,7 @@ def crawler(manganame, mangalink):
     volumes = soup.find(id="chapters")
     for chap in volumes.find_all("a", { "class" : "tips" }):
         #print re.findall(r'\d+', allchapters.text)
-        allchapters.insert(0, chap.get("href"))
+        allchapters.insert(0, "https:"+chap.get("href"))
 
     while allchapters:
         linkstodownload = []
@@ -99,7 +101,7 @@ def crawler(manganame, mangalink):
                 for pages in soup.findAll("option"):
                     if pages['value'] == '0' :
                         break
-                    #print 'value: {}, text: {} , np: {}'.format(pages['value'], pages.text, numberofpages)
+                    print('value: {}, text: {} , np: {}'.format(pages['value'], pages.text, numberofpages))
                     downloadsucess = False
                     while downloadsucess == False: 
                         downloadsucess = downloadPages(chapter[:-6], pages.text, numberofpages)
@@ -154,13 +156,13 @@ def options():
 
 if __name__ == "__main__":
     
-    options()
+    #options()
 
     # # For this version you need to edit this link
-    # mangalink = "http://mangafox.me/manga/hunter_x_hunter/"
+    mangalink = "https://mangafox.me/manga/hunter_x_hunter/"
     
-    # manganame = mangalink.replace("http://mangafox.me/manga/","")
-    # manganame = manganame.replace("/","")
-    # manganame = manganame.title()
+    manganame = mangalink.replace("https://mangafox.me/manga/","")
+    manganame = manganame.replace("/","")
+    manganame = manganame.title()
 
-    # crawler(manganame, mangalink)
+    crawler(manganame, mangalink)
