@@ -7,12 +7,21 @@ import re
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from pdfconverter import to_pdf
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-pdf","--pdf_directory", dest="DIR_DOWNLOADED", help = "Path to the final pdf" , metavar="STRING")
+parser.add_argument("-tmp","--temp_directory", dest="DIR_TEMP", help = "temp folder to store images" , metavar="STRING")
+parser.add_argument("-mangalink","--manga_link",dest="mangalink", help = "url from mangafox for a manga", metavar="STRING")
+
+
+args = parser.parse_args()
 
 
 TESTE = "TESTE" 
 
-DIR_DOWNLOADED = os.path.join(os.getcwd(),"downloaded/")
-DIR_TEMP = os.path.join(os.getcwd(),"tmp/")
+DIR_DOWNLOADED = args.DIR_DOWNLOADED
+DIR_TEMP = args.DIR_TEMP
 
 
 def save_fig(path, tight_layout=True, fig_extension="png", resolution=300):
@@ -173,10 +182,13 @@ if __name__ == "__main__":
     #options()
 
     # # For this version you need to edit this link
-    mangalink = "http://fanfox.net/manga/sherlock/"
+    mangalink = args.mangalink
+    #"http://fanfox.net/manga/sherlock/"
     
-    manganame = mangalink.replace("https://mangafox.me/manga/","")
-    manganame = manganame.replace("/","")
-    manganame = manganame.title()
+    # manganame = mangalink.replace("http://mangafox.me/manga/","")
+    # manganame = manganame.replace("/","")
+    manganame = mangalink[:-1].rpartition('/')[2].title()
 
     crawler(manganame, mangalink)
+
+
