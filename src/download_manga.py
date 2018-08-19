@@ -21,7 +21,7 @@ args = parser.parse_args()
 TESTE = "TESTE" 
 
 DIR_DOWNLOADED = args.DIR_DOWNLOADED
-DIR_TEMP = args.DIR_TEMP
+DIR_TEMP = os.path.join(args.DIR_TEMP,args.mangalink[:-1].rpartition('/')[2].title())
 
 
 def save_fig(path, tight_layout=True, fig_extension="png", resolution=300):
@@ -42,7 +42,7 @@ def checkFolder():
         if files:
             print("Deleting all files inside tmp folder")
             for file in files:
-                os.remove(DIR_TEMP + file)
+                os.remove(os.path.join(DIR_TEMP ,file))
 
     if not os.path.isdir(DIR_DOWNLOADED):
         print("Creating downloaded folder")
@@ -130,7 +130,7 @@ def crawler(manganame, mangalink):
                         downloadsucess = downloadPages(chapter[:-6], pages.text, numberofpages)
                     numberofpages = numberofpages + 1
 
-            to_pdf(DIR_TEMP,volumetodownload[0], manganame)
+            to_pdf(DIR_TEMP,DIR_DOWNLOADED,volumetodownload[0], manganame)
 
 def manuallyMode():
     mangalink = input('Enter your mangafox link: ')
