@@ -96,7 +96,8 @@ def crawler(manganame, mangalink):
         volumetodownload = re.findall(r"v(\w+)", allchapters[0])
         i = 0
         
-        if volumetodownload[0] != "TBD": 
+        if volumetodownload and volumetodownload[0] != "TBD":
+            vol_num=volumetodownload[0]
             while i< len(allchapters)and re.findall(r"v(\w+)", allchapters[i]) == volumetodownload :
                 linkstodownload.append(allchapters[i])
                 i = i + 1
@@ -106,14 +107,15 @@ def crawler(manganame, mangalink):
         else:
             linkstodownload = allchapters
             allchapters = []
+            vol_num="NA"
 
 
-        volume = manganame + "_Volume_" + volumetodownload[0] + ".pdf"        
+        volume = manganame + "_Volume_" + vol_num + ".pdf"
         alreadydownloaded = checkVolumesDownloaded(manganame)
         if volume in alreadydownloaded:
-            print("[  Volume", volumetodownload[0], " ] Is already in your folder downloaded")
+            print("[  Volume", vol_num, " ] Is already in your folder downloaded")
         else:
-            print("[  Volume", volumetodownload[0], " ] Started")
+            print("[  Volume", vol_num, " ] Started")
             numberofpages = 1
             for chapter in linkstodownload:
                 print(" | Download | From", chapter)
@@ -130,7 +132,7 @@ def crawler(manganame, mangalink):
                         downloadsucess = downloadPages(chapter[:-6], pages.text, numberofpages)
                     numberofpages = numberofpages + 1
 
-            to_pdf(DIR_TEMP,DIR_DOWNLOADED,volumetodownload[0], manganame)
+            to_pdf(DIR_TEMP,DIR_DOWNLOADED,vol_num, manganame)
 
 def manuallyMode():
     mangalink = input('Enter your mangafox link: ')
