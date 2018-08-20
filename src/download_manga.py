@@ -96,7 +96,7 @@ def crawler(manganame, mangalink):
         volumetodownload = re.findall(r"v(\w+)", allchapters[0])
         i = 0
         
-        if volumetodownload and volumetodownload[0] != "TBD":
+        if len(volumetodownload)!=0 and volumetodownload[0] != "TBD":
             vol_num=volumetodownload[0]
             while i< len(allchapters)and re.findall(r"v(\w+)", allchapters[i]) == volumetodownload :
                 linkstodownload.append(allchapters[i])
