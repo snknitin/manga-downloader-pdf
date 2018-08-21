@@ -104,10 +104,18 @@ def crawler(manganame, mangalink):
 
             for i in linkstodownload:
                 allchapters.remove(i)
+
+        elif len(volumetodownload)==0:
+            linkstodownload.append(allchapters[i])
+            i = i + 1
+            for i in linkstodownload:
+                allchapters.remove(i)
+            vol_num = "NA"
+
         else:
             linkstodownload = allchapters
             allchapters = []
-            vol_num="NA"
+            vol_num="TBD"
 
 
         volume = manganame + "_Volume_" + vol_num + ".pdf"
