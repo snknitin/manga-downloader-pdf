@@ -2,7 +2,7 @@
 
 Improved version for python3 version of code forked from [here](https://github.com/filipefilardi/manga-downloader-pdf)
 
-This code create pdf volumes for chapters that you find online. 
+This code create pdf volumes for chapters that you find online on mangafox. 
 
 The crawler script will download all volumes available in Manga Fox from a choosen manga for ([example](http://fanfox.net/manga/liar_game_roots_of_a/)) and convert each volume in pdf.
 
