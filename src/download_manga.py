@@ -106,8 +106,9 @@ def crawler(manganame, mangalink):
                 allchapters.remove(i)
 
         elif len(volumetodownload)==0:
-            linkstodownload.append(allchapters[i])
-            i = i + 1
+            while i < len(allchapters) and re.findall(r"v(\w+)", allchapters[i]) == volumetodownload:
+                linkstodownload.append(allchapters[i])
+                i = i + 1
             for i in linkstodownload:
                 allchapters.remove(i)
             vol_num = "NA"
